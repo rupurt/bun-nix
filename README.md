@@ -11,14 +11,14 @@ This `bun` `nix` flake assumes you have already [installed nix](https://determin
 ```nix
 {
   inputs.nixpkgs.url = "github:nixos/nixpkgs";
-  inputs.bun.url = "github:rupurt/bun-nix";
+  inputs.bun-nix.url = "github:rupurt/bun-nix";
   inputs.flake-utils.url = "github:numtide/flake-utils";
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
-    bun,
+    bun-nix,
     ...
   }:
     flake-utils.lib.eachDefaultSystem (system:
@@ -26,32 +26,28 @@ This `bun` `nix` flake assumes you have already [installed nix](https://determin
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
-            bun.overlay
+            bun-nix.overlay
           ];
         };
-      in rec
+      in
       {
-        packages = {
-          # to use a specific version tag
-          # bun = pkgs.bun_1_1_11 {};
-          #
-          # to use a version not exported from this package
-          # - get the sha256 for your host `nix hash to-sri --type sha256 $(nix-prefetch-url --unpack https://github.com/oven-sh/bun/releases/download/bun-v1.0.9/bun-linux-x64.zip)`
-          # - pass the specialArgs overrides
-          # bun = pkgs.bun {
-          #   specialArgs = {
-          #     version = "1.0.9";
-          #     shas = {
-          #       x86_64-linux = "sha256-R3l30NssWzt18cRZAidLLsBBBtV3NaCUm8dl4kMvIck="
-          #     };
-          #   };
-          # };
-          bun = pkgs.bun {};
-        };
-
         devShells.default = pkgs.mkShell {
           packages = [
-            packages.bun
+            # to use a specific version tag
+            # bun = pkgs.bunpkgs.bun_1_1_12 {};
+            #
+            # to use a version not exported from this package
+            # - get the sha256 for your host `nix hash to-sri --type sha256 $(nix-prefetch-url --unpack https://github.com/oven-sh/bun/releases/download/bun-v1.0.9/bun-linux-x64.zip)`
+            # - pass the specialArgs overrides
+            # bun = pkgs.bunpkgs.default {
+            #   specialArgs = {
+            #     version = "1.0.9";
+            #     shas = {
+            #       x86_64-linux = "sha256-R3l30NssWzt18cRZAidLLsBBBtV3NaCUm8dl4kMvIck="
+            #     };
+            #   };
+            # };
+            pkgs.bunpkgs.default
           ];
         };
       }

@@ -21,7 +21,8 @@
     in rec {
       # packages exported by the flake
       packages = rec {
-        bun_1_0_12 = pkgs.bun {
+        bun_1_0_12 = pkgs.callPackage ./default.nix {
+          inherit pkgs;
           specialArgs = {
             version = "1.0.12";
             shas = {
@@ -32,7 +33,8 @@
             };
           };
         };
-        bun_1_0_11 = pkgs.bun {
+        bun_1_0_11 = pkgs.callPackage ./default.nix {
+          inherit pkgs;
           specialArgs = {
             version = "1.0.11";
             shas = {
@@ -43,7 +45,8 @@
             };
           };
         };
-        bun_1_0_10 = pkgs.bun {
+        bun_1_0_10 = pkgs.callPackage ./default.nix {
+          inherit pkgs;
           specialArgs = {
             version = "1.0.10";
             shas = {
@@ -77,9 +80,9 @@
     outputs
     // {
       # Overlay that can be imported so you can access the packages
-      # using bun.overlay
+      # using bunpkgs.default
       overlay = final: prev: {
-        bun = prev.pkgs.callPackage ./default.nix {};
+        bunpkgs = outputs.packages.${prev.system};
       };
     };
 }

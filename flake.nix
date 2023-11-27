@@ -21,6 +21,18 @@
     in rec {
       # packages exported by the flake
       packages = rec {
+        bun_1_0_14 = pkgs.callPackage ./default.nix {
+          inherit pkgs;
+          specialArgs = {
+            version = "1.0.14";
+            shas = {
+              aarch64-darwin = "sha256-15YHmf3hJtkRXV8JO2P6XEx3ySOmaXIXU++pt6xl7fM=";
+              aarch64-linux = "sha256-lNyl/QPsJk8/RfMPmeCGmtDYVQ2DIGuYYMRclxsrmpA=";
+              x86_64-darwin = "sha256-hq+Ne9e6JHH2Ndc/pz1fntlpw427NE/wi155ytilELU=";
+              x86_64-linux = "sha256-u6Qd0V4XIVEmXaRUoL6ZlVBVAaVWOhm8PDa40wufBb0=";
+            };
+          };
+        };
         bun_1_0_13 = pkgs.callPackage ./default.nix {
           inherit pkgs;
           specialArgs = {
@@ -69,7 +81,7 @@
             };
           };
         };
-        default = bun_1_0_13;
+        default = bun_1_0_14;
       };
 
       # nix run
